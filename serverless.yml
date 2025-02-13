@@ -1,0 +1,19 @@
+service: banking-api
+
+provider:
+  name: aws
+  runtime: nodejs16.x
+  region: us-east-1
+  environment:
+    BANK_ACCOUNTS_TABLE: BankAccounts
+    TRANSACTIONS_TABLE: Transactions
+    JWT_SECRET: ${env:JWT_SECRET}
+
+functions:
+  app:
+    handler: server.handler
+    events:
+      - http:
+          path: /banking/{proxy+}
+          method: any
+          cors: true
